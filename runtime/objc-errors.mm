@@ -88,7 +88,7 @@ void _objc_fatal(const char *fmt, ...)
 
 #else
 
-#include <sandbox/private.h>
+//#include <sandbox/private.h>
 #include <_simple.h>
 
 // Return true if c is a UTF8 continuation byte
@@ -116,30 +116,30 @@ static void _objc_crashlog(const char *message)
 
     mutex_locker_t lock(crashlog_lock);
 
-    char *oldmsg = (char *)CRGetCrashLogMessage();
-    size_t oldlen;
-    const size_t limit = 8000;
-
-    if (!oldmsg) {
-        newmsg = strdup(message);
-    } else if ((oldlen = strlen(oldmsg)) > limit) {
-        // limit total length by dropping old contents
-        char *truncmsg = oldmsg + oldlen - limit;
-        // advance past partial UTF-8 bytes
-        while (isUTF8Continuation(*truncmsg)) truncmsg++;
-        _objc_asprintf(&newmsg, "... %s\n%s", truncmsg, message);
-    } else {
-        _objc_asprintf(&newmsg, "%s\n%s", oldmsg, message);
-    }
-
-    if (newmsg) {
-        // Strip trailing newline
-        char *c = &newmsg[strlen(newmsg)-1];
-        if (*c == '\n') *c = '\0';
-        
-        if (oldmsg) free(oldmsg);
-        CRSetCrashLogMessage(newmsg);
-    }
+//    char *oldmsg = (char *)CRGetCrashLogMessage();
+//    size_t oldlen;
+//    const size_t limit = 8000;
+//
+//    if (!oldmsg) {
+//        newmsg = strdup(message);
+//    } else if ((oldlen = strlen(oldmsg)) > limit) {
+//        // limit total length by dropping old contents
+//        char *truncmsg = oldmsg + oldlen - limit;
+//        // advance past partial UTF-8 bytes
+//        while (isUTF8Continuation(*truncmsg)) truncmsg++;
+//        _objc_asprintf(&newmsg, "... %s\n%s", truncmsg, message);
+//    } else {
+//        _objc_asprintf(&newmsg, "%s\n%s", oldmsg, message);
+//    }
+//
+//    if (newmsg) {
+//        // Strip trailing newline
+//        char *c = &newmsg[strlen(newmsg)-1];
+//        if (*c == '\n') *c = '\0';
+//        
+//        if (oldmsg) free(oldmsg);
+//        CRSetCrashLogMessage(newmsg);
+//    }
 }
 
 // Returns true if logs should be sent to stderr as well as syslog.
@@ -161,11 +161,11 @@ static void _objc_syslog(const char *message)
 {
     bool do_stderr = true;
 
-    if (sandbox_check(getpid(), "network-outbound",
-                      SANDBOX_FILTER_PATH, "/private/var/run/syslog")) {
-        _simple_asl_log(ASL_LEVEL_ERR, nil, message);
-        do_stderr = also_do_stderr();
-    }
+//    if (sandbox_check(getpid(), "network-outbound",
+//                      SANDBOX_FILTER_PATH, "/private/var/run/syslog")) {
+//        _simple_asl_log(ASL_LEVEL_ERR, nil, message);
+//        do_stderr = also_do_stderr();
+//    }
 
     if (do_stderr) {
         write(STDERR_FILENO, message, strlen(message));

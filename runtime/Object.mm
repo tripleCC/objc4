@@ -30,6 +30,48 @@
 #undef id
 #undef Class
 
+#include <time.h>
+
+extern "C"
+{
+int     close$UNIX2003(int arg) {
+    return close(arg);
+}
+
+int     fstat$INODE64(int arg, struct stat *arg1) {
+    return fstat(arg, arg1);
+}
+
+int     fsync$UNIX2003(int arg) {
+    return fsync(arg);
+}
+
+int     lstat$INODE64(const char *arg, struct stat *arg1) {
+    return lstat(arg, arg1);
+}
+
+ssize_t     pread$UNIX2003(int fd, void * buf, size_t nbyte, off_t offset) {
+    return pread(fd, buf, nbyte, offset);
+}
+
+int     usleep$UNIX2003(useconds_t arg) {
+    return usleep(arg);
+}
+
+ssize_t     write$UNIX2003(int fd, const void * buf, size_t nbyte) {
+    return write(fd, buf, nbyte);
+}
+
+int nanosleep$UNIX2003(const struct timespec *__rqtp, struct timespec *__rmtp) {
+    return nanosleep(__rqtp, __rmtp);
+}
+
+char    *strerror$UNIX2003(int __errnum) {
+    return strerror(__errnum);
+}
+
+}
+
 typedef struct objc_class *Class;
 typedef struct objc_object *id;
 

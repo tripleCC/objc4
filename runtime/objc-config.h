@@ -149,7 +149,7 @@
 #elif !TARGET_OS_OSX
 #   define SUPPORT_MESSAGE_LOGGING 0
 #else
-#   define SUPPORT_MESSAGE_LOGGING 1
+#   define SUPPORT_MESSAGE_LOGGING 0
 #endif
 
 // Define SUPPORT_AUTORELEASEPOOL_DEDDUP_PTRS to combine consecutive pointers to the same object in autorelease pools

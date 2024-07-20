@@ -159,7 +159,7 @@ static inline uintptr_t mask16ShiftBits(uint16_t mask)
 #   include <mach-o/ldsyms.h>
 #   include <os/lock_private.h>
 #   include <libkern/OSCacheControl.h>
-#   include <System/pthread_machdep.h>
+#   include <pthread/tsd_private.h>
 #endif // !TARGET_OS_EXCLAVEKIT
 
 #   include "objc-probes.h"  // generated dtrace probe definitions.
@@ -302,7 +302,7 @@ T AtomicDecrement(volatile T *value)
 
 #if !TARGET_OS_IPHONE
 #   if !TARGET_OS_EXCLAVEKIT
-#       include <CrashReporterClient.h>
+//#       include <CrashReporterClient.h>
 #   endif
 #else
     // CrashReporterClient not yet available on iOS
@@ -508,12 +508,12 @@ ustrdupMaybeNil(const uint8_t *str)
 // This version order matches OBJC_AVAILABLE.
 //
 // NOTE: prefer dyld_program_sdk_at_least when possible
-#define sdkIsAtLeast(x, i, t, w, b)                                    \
-    (dyld_program_sdk_at_least(dyld_platform_version_macOS_ ## x)   || \
-     dyld_program_sdk_at_least(dyld_platform_version_iOS_ ## i)     || \
-     dyld_program_sdk_at_least(dyld_platform_version_tvOS_ ## t)    || \
-     dyld_program_sdk_at_least(dyld_platform_version_watchOS_ ## w) || \
-     dyld_program_sdk_at_least(dyld_platform_version_bridgeOS_ ## b))
+//#define sdkIsAtLeast(x, i, t, w, b)                                    \
+//    (dyld_program_sdk_at_least(dyld_platform_version_macOS_ ## x)   || \
+//     dyld_program_sdk_at_least(dyld_platform_version_iOS_ ## i)     || \
+//     dyld_program_sdk_at_least(dyld_platform_version_tvOS_ ## t)    || \
+//     dyld_program_sdk_at_least(dyld_platform_version_watchOS_ ## w) || \
+//     dyld_program_sdk_at_least(dyld_platform_version_bridgeOS_ ## b))
 
 
 // If we don't have asprintf(), use our own implementation instead

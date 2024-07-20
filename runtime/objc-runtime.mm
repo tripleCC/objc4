@@ -36,8 +36,8 @@
 #include <TargetConditionals.h>
 
 #if !TARGET_OS_EXCLAVEKIT
-#include <os/feature_private.h> // os_feature_enabled_simple()
-#include <os/variant_private.h> // os_variant_allows_internal_security_policies()
+//#include <os/feature_private.h> // os_feature_enabled_simple()
+//#include <os/variant_private.h> // os_variant_allows_internal_security_policies()
 #endif
 
 #include <strings.h>
@@ -387,28 +387,28 @@ void environ_init(void)
         return;
     } 
 
-    // Turn off autorelease LRU coalescing by default for apps linked against
-    // older SDKs. LRU coalescing can reorder releases and certain older apps
-    // are accidentally relying on the ordering.
-    // rdar://problem/63886091
-    if (!dyld_program_sdk_at_least(dyld_fall_2020_os_versions))
-        DisableAutoreleaseCoalescingLRU = On;
-
-    // class_rx_t pointer signing enforcement is *disabled* by default unless
-    // this OS feature is enabled, but it can be explicitly enabled by setting
-    // the environment variable, for testing.
-    if (!os_feature_enabled_simple(objc4, classRxSigning, false))
-        DisableClassRXSigningEnforcement = On;
-
-    // Faults for class_ro_t pointer signing enforcement are disabled by
-    // default unless this OS feature is enabled.
-    if (!os_feature_enabled_simple(objc4, classRoSigningFaults, false))
-        DisableClassROFaults = On;
-
-#if TARGET_OS_OSX || TARGET_OS_SIMULATOR
-    if (!os_feature_enabled_simple(objc4, autoreleaseFaultsMacOS, false))
-        DisableFaults = On;
-#endif
+//    // Turn off autorelease LRU coalescing by default for apps linked against
+//    // older SDKs. LRU coalescing can reorder releases and certain older apps
+//    // are accidentally relying on the ordering.
+//    // rdar://problem/63886091
+//    if (!dyld_program_sdk_at_least(dyld_fall_2020_os_versions))
+//        DisableAutoreleaseCoalescingLRU = On;
+//
+//    // class_rx_t pointer signing enforcement is *disabled* by default unless
+//    // this OS feature is enabled, but it can be explicitly enabled by setting
+//    // the environment variable, for testing.
+//    if (!os_feature_enabled_simple(objc4, classRxSigning, false))
+//        DisableClassRXSigningEnforcement = On;
+//
+//    // Faults for class_ro_t pointer signing enforcement are disabled by
+//    // default unless this OS feature is enabled.
+//    if (!os_feature_enabled_simple(objc4, classRoSigningFaults, false))
+//        DisableClassROFaults = On;
+//
+//#if TARGET_OS_OSX || TARGET_OS_SIMULATOR
+//    if (!os_feature_enabled_simple(objc4, autoreleaseFaultsMacOS, false))
+//        DisableFaults = On;
+//#endif
 #endif // !TARGET_OS_EXCLAVEKIT
 
     bool PrintHelp = false;
@@ -458,7 +458,8 @@ void environ_init(void)
             const option_t *opt = &Settings[i];
 #if !TARGET_OS_EXCLAVEKIT
             if (opt->internal
-                && !os_variant_allows_internal_security_policies("com.apple.obj-c"))
+//                && !os_variant_allows_internal_security_policies("com.apple.obj-c")
+                )
                 continue;
 #endif // !TARGET_OS_EXCLAVEKIT
             if ((size_t)(value - *p) == 1+opt->envlen  &&  
@@ -498,9 +499,9 @@ void environ_init(void)
         }
     }
 
-    if (!os_feature_enabled_simple(objc4, preoptimizedCaches, true)) {
-        DisablePreoptCaches = On;
-    }
+//    if (!os_feature_enabled_simple(objc4, preoptimizedCaches, true)) {
+//        DisablePreoptCaches = On;
+//    }
 #endif // !TARGET_OS_EXCLAVEKIT
 
     // Print OBJC_HELP and OBJC_PRINT_OPTIONS output.
@@ -521,7 +522,8 @@ void environ_init(void)
             const option_t *opt = &Settings[i];
 #if !TARGET_OS_EXCLAVEKIT
             if (opt->internal
-                && !os_variant_allows_internal_security_policies("com.apple.obj-c"))
+//                && !os_variant_allows_internal_security_policies("com.apple.obj-c")
+                )
                 continue;
 #endif // !TARGET_OS_EXCLAVEKIT
             if (PrintHelp) _objc_inform("%s: %s", opt->env, opt->help);
